@@ -27,6 +27,7 @@ import CartButton from "../Buttons/CartButton";
 // Stores
 import coffeeStore from "../../Stores/coffeeStore";
 import cartStore from "../../Stores/cartStore";
+import authstore from "../../Stores/AuthStore";
 
 class CoffeeDetail extends Component {
   state = {
@@ -41,7 +42,22 @@ class CoffeeDetail extends Component {
 
   changeQuantity = value => this.setState({ quantity: value });
 
-  handleAdd = () => cartStore.addItemToCart(this.state);
+  handleAdd = () => {
+    if (authstore.user) {
+      cartStore.addItemToCart(this.state);
+    } else {
+      Alert.alert("Hello Stranger", "Please Login or Sign up", [
+        {
+          text: "Login",
+          onPress: () => this.props.navigation.navigate("Login")
+        },
+        {
+          text: "Cancel",
+          onPress: () => this.props.navigation.navigate("DetailScreen")
+        }
+      ]);
+    }
+  };
 
   render() {
     const coffeeshopID = this.props.navigation.getParam("coffeeshopID");

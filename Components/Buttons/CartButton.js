@@ -5,11 +5,13 @@ import { Icon, Text, Button } from "native-base";
 
 // Stores
 import cartStore from "../../Stores/cartStore";
+import authStore from "../../Stores/AuthStore";
+import LoginButton from "./LoginButton";
 
 const CartButton = ({ navigation }) => {
   const handlePress = () => navigation.navigate("CartScreen");
 
-  return (
+  return authStore.user ? (
     <Button onPress={handlePress} transparent light>
       <Text style={{ color: "white" }}>{cartStore.quantity}</Text>
       <Icon
@@ -19,6 +21,8 @@ const CartButton = ({ navigation }) => {
         onPress={handlePress}
       />
     </Button>
+  ) : (
+    <LoginButton />
   );
 };
 
